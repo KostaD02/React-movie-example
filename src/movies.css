@@ -1,0 +1,36 @@
+body {
+  margin: 0px;
+  padding: 20px 0px 0px 0px;
+  font-family: sans-serif;
+}
+body i {
+  color: red;
+}
+.clickable {
+  cursor: pointer;
+  width: 400px;
+  text-align: center;
+}
+.fa-sort {
+  color: black;
+  margin-left: 5px;
+}
+.col-3 {
+  margin-top: 53px;
+}
+
+table tr,
+th,
+td {
+  border: 1px solid rgb(138, 138, 138);
+}
+.table thead th {
+  border: 1px solid rgb(138, 138, 138) !important;
+}
+.list-group-item {
+  border: 1px solid rgb(138, 138, 138) !important;
+}
+
+.table td {
+  text-align: center;
+}
