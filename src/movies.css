@@ -1,6 +1,6 @@
 body {
   margin: 0px;
-  padding: 20px 0px 0px 0px;
+  padding: 0px;
   font-family: sans-serif;
 }
 body i {
@@ -33,4 +33,37 @@ td {
 
 .table td {
   text-align: center;
+}
+
+.notFound {
+  margin: 150px auto;
+  width: 90%;
+  height: 400px;
+  background-image: url(https://banner2.cleanpng.com/20180418/ilw/kisspng-desktop-wallpaper-sorry-smiley-sorry-5ad70bb4221d48.6314340515240426761397.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.notFound h1 {
+  font-size: 100px;
+  margin-top: 30px;
+}
+.notFound h1,
+h3,
+h4 {
+  text-align: center;
+  color: #5b3b1b;
+}
+.text-notfound {
+  float: right;
+  width: calc(100% - 500px);
+  height: 100%;
+}
+.notFound a {
+  color: orange;
+}
+.notFound a:hover {
+  border-bottom: 1px solid black;
+  padding-bottom: 3px;
+  text-decoration: none;
+  color: orange;
 }
