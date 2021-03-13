@@ -3,9 +3,10 @@ import ListGroup from "./common/listGroup";
 import { getMovies } from "../services/fakeMovieService";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
-import {getGenres} from "../services/fakeGenreService";
+import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
-import _ from 'lodash';
+import queryString from "query-string";
+import _ from "lodash";
 import "../movies.css";
 
 class Movies extends Component {
@@ -13,15 +14,32 @@ class Movies extends Component {
     movies: [],
     genres: [],
     currentPage: 1,
-    pageSize:4,
-    sortColumn: {path: 'title',order :'asc'}
+    pageSize: 4,
+    sortColumn: { path: "title", order: "asc" },
   };
-  componentDidMount(){
-    const genres = [{_id: "",name:'All Genres'},...getGenres()];
-    this.setState({movies:getMovies(),genres})
+  componentDidMount() {
+    const { history } = this.props;
+    const { sortBy } = queryString.parse(history.location.search);
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
+    if (sortBy === "asc") {
+      this.setState({
+        sortColumn: { path: "dailyRentalRate", order: "asc" },
+      });
+    } else if (sortBy === "desc") {
+      this.setState({
+        sortColumn: { path: "dailyRentalRate", order: "desc" },
+      });
+    } else {
+      this.setState({
+        sortColumn: { path: "title", order: "asc" },
+      });
+    }
+    this.setState({ movies: getMovies(), genres });
   }
   handleDelete = (movie) => {
     const movies = this.state.movies.filter((m) => m._id !== movie._id);
+    if (this.getPagedData().data.length === 1)
+      this.setState({ currentPage: this.currentPage-- });
     this.setState({ movies: movies });
   };
   handleClick = (movie) => {
@@ -34,25 +52,44 @@ class Movies extends Component {
   handleReset = () => {
     this.setState({ movies: getMovies() });
   };
-  handlePageChange = page => {
-    this.setState({currentPage:page});
-  }
-  handleGenreSelect = genre => {
-    this.setState({selectedGenre: genre , currentPage: 1})
-  }
-  handleSort = sortColumn => {
-    this.setState({sortColumn});
-  }
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+  handleGenreSelect = (genre) => {
+    this.setState({ selectedGenre: genre, currentPage: 1 });
+  };
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
   getPagedData = () => {
-    const { pageSize,currentPage,selectedGenre,movies:allMovies,sortColumn} = this.state;
-    const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id) : allMovies;
-    const sorted= _.orderBy(filtered, [sortColumn.path],[sortColumn.order]);
-    const movies = paginate(sorted,currentPage,pageSize);
-    return { totalCount : filtered.length,data:movies};
-  } 
+    const {
+      pageSize,
+      currentPage,
+      selectedGenre,
+      movies: allMovies,
+      sortColumn,
+    } = this.state;
+    const filtered =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
+        : allMovies;
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+    const movies = paginate(sorted, currentPage, pageSize);
+    return { totalCount: filtered.length, data: movies };
+  };
+  raiseSortt = () => {
+    // const { history } = this.props;
+    // let order = history.location.search === "?sortBy=asc" ? "desc" : "asc";
+    // history.push(`/movies?sortBy=${order}`);
+    // this.setState({ sortColumn: { path: "dailyRentalRate", order } });
+    const { history } = this.props;
+    let order = history.location.search === "?sortBy=asc" ? "desc" : "asc";
+    history.push(`/movies?sortBy=${order}`);
+    this.setState({ sortColumn: { path: "dailyRentalRate", order } });
+  };
   render() {
     const { length: count } = this.state.movies;
-    const { pageSize,currentPage,sortColumn} = this.state;
+    const { pageSize, currentPage, sortColumn } = this.state;
     if (count === 0)
       return (
         <div>
@@ -64,23 +101,41 @@ class Movies extends Component {
             Reset
           </button>
         </div>
-    );
-    const {totalCount , data:movies } = this.getPagedData();
+      );
+    const { totalCount, data: movies } = this.getPagedData();
     return (
       <div className="row">
         <div className="col-3">
-          <ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect} />
+          <ListGroup
+            items={this.state.genres}
+            selectedItem={this.state.selectedGenre}
+            onItemSelect={this.handleGenreSelect}
+          />
         </div>
         <div className="col">
-        <span>Showing {totalCount} movies in the database </span>
-        <button
-          onClick={() => this.handleReset()}
-          className="btn btn-warning m-2"
-        >
-          Reset
-        </button>
-        <MoviesTable movies={movies} sortColumn={sortColumn} onLike={this.handleClick} onDelete={this.handleDelete} onSort={this.handleSort} />
-        <Pagination itemsCount={totalCount} pageSize={pageSize} currentPage={currentPage} onPageChange={this.handlePageChange} />
+          <span>Showing {totalCount} movies in the database </span>
+          <button
+            onClick={() => this.handleReset()}
+            className="btn btn-warning m-2"
+          >
+            Reset
+          </button>
+          <button className="btn btn-success m-2" onClick={this.raiseSortt}>
+            Sort
+          </button>
+          <MoviesTable
+            movies={movies}
+            sortColumn={sortColumn}
+            onLike={this.handleClick}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+          />
+          <Pagination
+            itemsCount={totalCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
+          />
         </div>
       </div>
     );

@@ -39,9 +39,10 @@ td {
   margin: 150px auto;
   width: 90%;
   height: 400px;
-  background-image: url(https://banner2.cleanpng.com/20180418/ilw/kisspng-desktop-wallpaper-sorry-smiley-sorry-5ad70bb4221d48.6314340515240426761397.jpg);
+  background-image: url(https://www.pngitem.com/pimgs/m/208-2085926_sorry-transparent-background-png-transparent-sorry-png-png.png);
   background-repeat: no-repeat;
   background-size: contain;
+  background-color: #f7f7f7;
 }
 .notFound h1 {
   font-size: 100px;
@@ -56,6 +57,7 @@ h4 {
 .text-notfound {
   float: right;
   width: calc(100% - 500px);
+
   height: 100%;
 }
 .notFound a {

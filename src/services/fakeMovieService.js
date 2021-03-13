@@ -91,7 +91,7 @@ const movies = [
     liked: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471821",
+    _id: "5b21ca3eeb7f6fbccd47182123",
     title: "MovieName3",
     genre: { _id: "23412312sad3214123214", name: "Hakeruli" },
     numberInStock: 1,
@@ -105,7 +105,7 @@ const movies = [
     numberInStock: 3,
     dailyRentalRate: 3.5,
     liked: false,
-  }
+  },
 ];
 
 export function getMovies() {

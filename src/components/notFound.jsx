@@ -8,7 +8,7 @@ const notFound = () => {
         <h3>We couldn't find the page..</h3> <br />
         <h4>
           Sorry,but page you looking for was not found, Please contact{" "}
-          <a href="#">Support</a>
+          <a href="support@gmail.com">Support</a>
         </h4>
       </div>
     </div>
