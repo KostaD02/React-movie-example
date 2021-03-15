@@ -12,8 +12,8 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBar />
         <main className="container">
+          <NavBar />
           <Switch>
             <Route path="/movies/:id" component={movieForm} />
             <Route path="/movies" component={Movies} />

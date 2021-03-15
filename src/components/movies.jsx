@@ -6,6 +6,7 @@ import { paginate } from "../utils/paginate";
 import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import queryString from "query-string";
+import "bootstrap/dist/js/bootstrap.js";
 import _ from "lodash";
 import "../movies.css";
 
@@ -77,15 +78,12 @@ class Movies extends Component {
     const movies = paginate(sorted, currentPage, pageSize);
     return { totalCount: filtered.length, data: movies };
   };
-  raiseSortt = () => {
+  raiseSortt = (order, movies, thName) => {
     // const { history } = this.props;
     // let order = history.location.search === "?sortBy=asc" ? "desc" : "asc";
     // history.push(`/movies?sortBy=${order}`);
-    // this.setState({ sortColumn: { path: "dailyRentalRate", order } });
-    const { history } = this.props;
-    let order = history.location.search === "?sortBy=asc" ? "desc" : "asc";
-    history.push(`/movies?sortBy=${order}`);
-    this.setState({ sortColumn: { path: "dailyRentalRate", order } });
+    this.props.history.push(`/${movies}?sortBy=${order}`);
+    this.setState({ sortColumn: { path: `${thName}`, order } });
   };
   render() {
     const { length: count } = this.state.movies;
@@ -114,15 +112,98 @@ class Movies extends Component {
         </div>
         <div className="col">
           <span>Showing {totalCount} movies in the database </span>
-          <button
+          <a
             onClick={() => this.handleReset()}
             className="btn btn-warning m-2"
+            href="/"
           >
             Reset
-          </button>
-          <button className="btn btn-success m-2" onClick={this.raiseSortt}>
-            Sort
-          </button>
+          </a>
+          <div className="dropdown" id="gadaqceva">
+            <button
+              className="btn btn-info dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Sort
+            </button>
+            <div
+              className="dropdown-menu "
+              aria-labelledby="dropdownMenuButton"
+            >
+              <div className="dropdown-item" href="#">
+                <span className="nameButtonSort">Title </span>
+                <button
+                  className="btn btn-success m-1"
+                  onClick={() => this.raiseSortt("asc", "movies", "title")}
+                >
+                  Asc
+                </button>
+                <button
+                  className="btn btn-danger m-1"
+                  onClick={() => this.raiseSortt("desc", "movies", "title")}
+                >
+                  Desc
+                </button>
+              </div>
+              <div className="dropdown-item" href="#">
+                <span className="nameButtonSort">Genre </span>
+                <button
+                  className="btn btn-success m-1"
+                  onClick={() => this.raiseSortt("asc", "movies", "Genre")}
+                >
+                  Asc
+                </button>
+                <button
+                  className="btn btn-danger m-1"
+                  onClick={() => this.raiseSortt("desc", "movies", "Genre")}
+                >
+                  Desc
+                </button>
+              </div>
+              <div className="dropdown-item" href="#">
+                <span className="nameButtonSort">Stock </span>
+                <button
+                  className="btn btn-success m-1"
+                  onClick={() =>
+                    this.raiseSortt("asc", "movies", "numberInStock")
+                  }
+                >
+                  Asc
+                </button>
+                <button
+                  className="btn btn-danger m-1"
+                  onClick={() =>
+                    this.raiseSortt("desc", "movies", "numberInStock")
+                  }
+                >
+                  Desc
+                </button>
+              </div>
+              <div className="dropdown-item" href="#">
+                <span className="nameButtonSort">Rate </span>
+                <button
+                  className="btn btn-success m-1"
+                  onClick={() =>
+                    this.raiseSortt("asc", "movies", "dailyRentalRate")
+                  }
+                >
+                  Asc
+                </button>
+                <button
+                  className="btn btn-danger m-1"
+                  onClick={() =>
+                    this.raiseSortt("desc", "movies", "dailyRentalRate")
+                  }
+                >
+                  Desc
+                </button>
+              </div>
+            </div>
+          </div>
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
